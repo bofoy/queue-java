@@ -1,23 +1,46 @@
 package com.bofoy.queue.domain;
 
-import java.math.BigDecimal;
+import java.math.BigInteger;
 
-public class Person {
-	
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "user")
+public class UserSignupDTO {
+
+	@Id
+	@Column(name = "user_name")
 	private String userName;
+
+	@Column(name = "first_name")
 	private String firstName;
+
+	@Column(name = "last_name")
 	private String lastName;
-	private boolean availability;
-	private BigDecimal rate;
+
+	@Column(name = "password")
+	private String password;
+
+	@Column(name = "password_salt")
+	private BigInteger passwordSalt;
+
+	@Column(name = "age")
 	private int age;
+
+	@Column(name = "email")
 	private String email;
 
-	private Person(Builder builder) {
+	private UserSignupDTO() {}
+	
+	private UserSignupDTO(Builder builder) {
 		this.userName = builder.userName;
 		this.firstName = builder.firstName;
 		this.lastName = builder.lastName;
-		this.availability = builder.availability;
-		this.rate = builder.rate;
+		this.password = builder.password;
+		this.passwordSalt = builder.passwordSalt;
 		this.age = builder.age;
 		this.email = builder.email;
 	}
@@ -38,12 +61,12 @@ public class Person {
 		return lastName;
 	}
 	
-	public boolean getAvailability() {
-		return this.availability;
+	public String getPassword() {
+		return password;
 	}
 	
-	public BigDecimal getRate() {
-		return this.rate;
+	public BigInteger getPasswordSalt() {
+		return passwordSalt;
 	}
 
 	public int getAge() {
@@ -59,8 +82,6 @@ public class Person {
 		return "Person [userName=" + userName +
 				", firstName=" + firstName +
 				", lastName=" + lastName +
-				", availability=" + availability +
-				", rate=" + rate +
 				", age=" + age +
 				", email=" + email + "]";
 	}
@@ -70,8 +91,8 @@ public class Person {
 		private String userName;
 		private String firstName;
 		private String lastName;
-		private boolean availability;
-		private BigDecimal rate;
+		private String password;
+		private BigInteger passwordSalt;
 		private int age;
 		private String email;
 		
@@ -90,13 +111,13 @@ public class Person {
 			return this;
 		}
 		
-		public Builder availability(boolean availabililty) {
-			this.availability = availabililty;
+		public Builder password(String password) {
+			this.password = password;
 			return this;
 		}
 		
-		public Builder rate(BigDecimal rate) {
-			this.rate = rate;
+		public Builder passwordSalt(BigInteger passwordSalt) {
+			this.passwordSalt = passwordSalt;
 			return this;
 		}
 		
@@ -110,8 +131,8 @@ public class Person {
 			return this;
 		}
 		
-		public Person build() {
-			return new Person(this);
+		public UserSignupDTO build() {
+			return new UserSignupDTO(this);
 		}
 		
 	}

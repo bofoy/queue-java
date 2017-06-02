@@ -1,8 +1,7 @@
 plugins {
 	id 'org.springframework.boot' version '1.5.3.RELEASE'
+	id 'java'
 }
-
-apply plugin: 'java'
 
 group = 'com.bofoy.queue'
 version = '0.1.0-SNAPSHOT'
@@ -16,12 +15,23 @@ repositories {
 
 dependencies {
     compile 'org.slf4j:slf4j-api:1.7.21'
-	compile 'org.springframework.boot:spring-boot-starter-web:1.5.3.RELEASE'
-	compile 'org.springframework:spring-jdbc:4.3.8.RELEASE'
 	compile 'ch.qos.logback:logback-classic:1.2.3'
 	compile 'ch.qos.logback:logback-core:1.2.3'
 	compile 'joda-time:joda-time:2.9.9'
+	
+	// Spring dependencies
+	compile 'org.springframework.boot:spring-boot-starter-web'
+	compile 'org.springframework:spring-context'
+	compile 'org.springframework:spring-orm'
+	compile group: 'org.hibernate', name: 'hibernate-core', version: '5.2.10.Final'
+	compile 'org.apache.tomcat:tomcat-dbcp:7.0.55'
 	compile 'mysql:mysql-connector-java:6.0.6'
+	compile 'org.mindrot:jbcrypt:0.4'
+	
+	compile 'io.springfox:springfox-swagger2:2.6.1'
+	compile 'io.springfox:springfox-swagger-ui:2.6.1'
+	
+	testCompile 'org.mockito:mockito-core:2.7.22'
     testCompile 'junit:junit:4.12'
 }
 
@@ -30,3 +40,10 @@ bootRun {
 		jvmArgs project.jvmArgs.split('\\s+')
 	}
 }
+
+test {
+	testLogging.showStandardStreams = true
+}
+
+
+
