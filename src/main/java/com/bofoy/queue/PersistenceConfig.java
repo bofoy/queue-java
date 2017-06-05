@@ -3,6 +3,8 @@ package com.bofoy.queue;
 import javax.sql.DataSource;
 
 import org.apache.tomcat.dbcp.dbcp.BasicDataSource;
+import org.dozer.DozerBeanMapper;
+import org.dozer.Mapper;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,6 +63,11 @@ public class PersistenceConfig {
 	@Bean
 	public PersistenceExceptionTranslationPostProcessor exceptionTranslation() {
 		return new PersistenceExceptionTranslationPostProcessor();
+	}
+	
+	@Bean
+	public Mapper modelMapper() {
+		return new DozerBeanMapper();
 	}
 	
 }

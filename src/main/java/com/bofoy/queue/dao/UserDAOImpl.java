@@ -2,9 +2,9 @@ package com.bofoy.queue.dao;
 
 import java.util.List;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -13,13 +13,13 @@ import javax.transaction.Transactional;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.mindrot.jbcrypt.BCrypt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.bofoy.queue.domain.UserDTO;
-import com.bofoy.queue.domain.UserSignupDTO;
+import com.bofoy.queue.domain.User;
 import com.bofoy.queue.exception.StatusCode;
 
 @Repository
@@ -32,17 +32,17 @@ public class UserDAOImpl implements UserDAO {
 	private SessionFactory sessionFactory;
 	
 	@Autowired
-	private EntityManager entityManager;
+	private EntityManagerFactory emFactory;
 	
 	private Session getCurrentSession() {
 		return sessionFactory.getCurrentSession();
 	}
 	
 	@Override
-	public List<UserDTO> getAllUsers() {
+	public List<User> getAllUsers() {
 		CriteriaBuilder builder = getCurrentSession().getCriteriaBuilder();
-		CriteriaQuery<UserDTO> query = builder.createQuery(UserDTO.class);
-		Root<UserDTO> root = query.from(UserDTO.class);
+		CriteriaQuery<User> query = builder.createQuery(User.class);
+		Root<User> root = query.from(User.class);
 		
 		query.select(root);
 		
@@ -50,39 +50,94 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public UserDTO getUser(String userName) throws NoResultException {
+	public User getUser(String userName) {
 		CriteriaBuilder builder = getCurrentSession().getCriteriaBuilder();
-		CriteriaQuery<UserDTO> query = builder.createQuery(UserDTO.class);
-		Root<UserDTO> root = query.from(UserDTO.class);
+		CriteriaQuery<User> query = builder.createQuery(User.class);
+		Root<User> root = query.from(User.class);
 		
 		query.select(root).where(builder.equal(root.get("userName"), userName));
 
-		UserDTO user = getCurrentSession().createQuery(query).getSingleResult();
-		
-		if (user == null) {
-			throw new NoResultException(StatusCode.USER_DOES_NOT_EXIST.toString());
-		} 
-		else {
+		try {
+			User user = getCurrentSession().createQuery(query).getSingleResult();
 			return user;
+		}
+		catch(NoResultException e) {
+			logger.error(StatusCode.USER_DOES_NOT_EXIST.toString() + ": " + e.getMessage());
+			return null;
 		}
 	}
 
 	@Override
-	public StatusCode addUser(UserSignupDTO user) {
+	public StatusCode addUser(User user) {
+		EntityManager entityManager = emFactory.createEntityManager();
+		
 		logger.debug("Beginning database transaction...");
+		
 		try {
 			entityManager.getTransaction().begin();
+			
+			String salt = BCrypt.gensalt();
+			String hashedPassword = BCrypt.hashpw(user.getPassword(), salt);
+			
+			user.setPassword(hashedPassword);
+			user.setPasswordSalt(salt);
+			
 			entityManager.persist(user);
 			entityManager.getTransaction().commit();
+			
+			logger.info("Successfully created user:{}", user.getUserName());
+			logger.debug("Ending database transaction...");
 			return StatusCode.SIGNUP_SUCCESSFUL;
-		} 
-		catch(IllegalStateException e) {
-			logger.error(e.getMessage());
+		}
+		catch (IllegalStateException e) {
+			logger.error(StatusCode.SIGNUP_FAILED.toString() + ": " + e.getMessage());
+			logger.debug("Rolling back transaction...");
+			entityManager.getTransaction().rollback();
 			return StatusCode.SIGNUP_FAILED;
 		} 
-		catch(EntityExistsException e) {
-			logger.error(e.getMessage());
-			return StatusCode.ALREADY_EXISTS;
+		catch (EntityExistsException e) {
+			logger.error(StatusCode.USER_ALREADY_EXISTS.toString() + ": " + e.getMessage());
+			logger.debug("Rolling back transaction...");
+			entityManager.getTransaction().rollback();
+			return StatusCode.USER_ALREADY_EXISTS;
+		}
+		catch (Exception e) {
+			logger.error(StatusCode.USER_ALREADY_EXISTS.toString() + ": " + e.getMessage());
+			logger.debug("Rolling back transaction...");
+			entityManager.getTransaction().rollback();
+			return StatusCode.USER_ALREADY_EXISTS;
+		}
+	}
+
+	@Override
+	public StatusCode deleteUser(String username) {
+		EntityManager entityManager = emFactory.createEntityManager();
+		
+		logger.debug("Beginning database transaction...");
+		
+		try {
+			entityManager.remove(username);
+			
+			logger.info("Successfully created user:{}", username);
+			return StatusCode.USER_DELETE_SUCCESS;
+		}
+		catch (IllegalStateException e) {
+			logger.error(StatusCode.USER_DELETE_FAILED.toString() + ": " + e.getMessage());
+			logger.debug("Failed to delete user:{}", username);
+			entityManager.getTransaction().rollback();
+			return StatusCode.USER_DELETE_FAILED;
+		} 
+		catch (EntityExistsException e) {
+			logger.error(StatusCode.USER_ALREADY_EXISTS.toString() + ": " + e.getMessage());
+			logger.debug("Failed to delete user:{}", username);
+			entityManager.getTransaction().rollback();
+			return StatusCode.USER_ALREADY_EXISTS;
+		}
+		catch (Exception e) {
+			logger.error(StatusCode.USER_DELETE_FAILED.toString() + ": " + e.getMessage());
+			logger.debug("Failed to delete user:{}", username);
+			entityManager.getTransaction().rollback();
+			return StatusCode.USER_DELETE_FAILED;
 		}
 	}
 	

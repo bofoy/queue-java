@@ -2,13 +2,18 @@ package com.bofoy.queue.exception;
 
 public enum StatusCode {
 
-	LOGIN_SUCCESSFUL("Login successful"),
-	LOGIN_FAILED("Login failed for unknown reasons"),
-	INCORRECT_PASSWORD("Incorrect password"),
-	USER_DOES_NOT_EXIST("User does not exist"),
-	SIGNUP_SUCCESSFUL("Signup successful"),
-	ALREADY_EXISTS("Username or email already exists"),
-	SIGNUP_FAILED("User signup failed"); //generic signup failed error
+	LOGIN_SUCCESSFUL("LOGIN_SUCCESSFUL"),
+	LOGIN_FAILED("LOGIN_FAILED"),
+	INCORRECT_PASSWORD("INCORRECT_PASSWORD"),
+	SIGNUP_SUCCESSFUL("SIGNUP_SUCCESSFUL"),
+	USER_DELETE_FAILED("USER_DELETE_FAILED"),
+	USER_DELETE_SUCCESS("USER_DELETE_SUCCESS"),
+	USER_ALREADY_EXISTS("USER_EXISTS"),
+	USER_DOES_NOT_EXIST("USER_DOES_NOT_EXIST"),
+	USER_FOUND("USER_FOUND"),
+	SIGNUP_FAILED("SIGNUP_FAILED"),
+	SUCCESS("SUCCESS"),
+	FAILED("FAILED");
 	
 	private String message;
 	

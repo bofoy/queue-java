@@ -2,16 +2,17 @@ package com.bofoy.queue.dao;
 
 import java.util.List;
 
-import com.bofoy.queue.domain.UserDTO;
-import com.bofoy.queue.domain.UserSignupDTO;
+import com.bofoy.queue.domain.User;
 import com.bofoy.queue.exception.StatusCode;
 
 public interface UserDAO {
 
-	List<UserDTO> getAllUsers();
+	List<User> getAllUsers();
 	
-	UserDTO getUser(String userName);
+	User getUser(String userName);
 	
-	StatusCode addUser(UserSignupDTO user);
+	StatusCode deleteUser(String username);
+	
+	StatusCode addUser(User user);
 	
 }

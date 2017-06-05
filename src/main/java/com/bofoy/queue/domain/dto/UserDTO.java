@@ -1,42 +1,35 @@
-package com.bofoy.queue.domain;
+package com.bofoy.queue.domain.dto;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "user")
 public class UserDTO {
-	
-	@Id
-	@Column(name = "user_name")
+
 	private String userName;
 
-	@Column(name = "first_name")
 	private String firstName;
 
-	@Column(name = "last_name")
 	private String lastName;
+	
+	private Date signupDate;
 
-	@Column(name = "rate")
 	private BigDecimal rate;
+	
+	private int radius;
 
-	@Column(name = "age")
 	private int age;
 
-	@Column(name = "email")
 	private String email;
 
-	private UserDTO() {}
+	public UserDTO() {}
 	
 	private UserDTO(Builder builder) {
 		this.userName = builder.userName;
 		this.firstName = builder.firstName;
 		this.lastName = builder.lastName;
+		this.signupDate = builder.signupDate;
 		this.rate = builder.rate;
+		this.radius = builder.radius;
 		this.age = builder.age;
 		this.email = builder.email;
 	}
@@ -57,10 +50,18 @@ public class UserDTO {
 		return lastName;
 	}
 	
+	public Date getSignupDate() {
+		return signupDate;
+	}
+	
 	public BigDecimal getRate() {
 		return this.rate;
 	}
 
+	public int getRadius() {
+		return this.radius;
+	}
+	
 	public int getAge() {
 		return age;
 	}
@@ -69,12 +70,46 @@ public class UserDTO {
 		return email;
 	}
 
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+	
+	public void setSignupDate(Date signupDate) {
+		this.signupDate = signupDate;
+	}
+
+	public void setRate(BigDecimal rate) {
+		this.rate = rate;
+	}
+
+	public void setRadius(int radius) {
+		this.radius = radius;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 	@Override
 	public String toString() {
 		return "Person [userName=" + userName +
 				", firstName=" + firstName +
 				", lastName=" + lastName +
+				", signupDate=" + signupDate.toString() +
 				", rate=" + rate +
+				", radius=" + radius +
 				", age=" + age +
 				", email=" + email + "]";
 	}
@@ -84,7 +119,9 @@ public class UserDTO {
 		private String userName;
 		private String firstName;
 		private String lastName;
+		private Date signupDate;
 		private BigDecimal rate;
+		private int radius;
 		private int age;
 		private String email;
 		
@@ -103,8 +140,18 @@ public class UserDTO {
 			return this;
 		}
 		
+		public Builder signupDate(Date signupDate) {
+			this.signupDate = signupDate;
+			return this;
+		}
+		
 		public Builder rate(BigDecimal rate) {
 			this.rate = rate;
+			return this;
+		}
+		
+		public Builder radius(int radius) {
+			this.radius = radius;
 			return this;
 		}
 		
