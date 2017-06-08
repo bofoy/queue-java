@@ -1,7 +1,7 @@
-package com.bofoy.queue.domain.dto;
+package com.bofoy.queue.dto;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,10 +35,10 @@ public class JobDTO {
 	private int duration;
 	
 	@Column(name = "start_time")
-	private Timestamp startTime;
+	private LocalDateTime startTime;
 	
 	@Column(name = "end_time")
-	private Timestamp endTime;
+	private LocalDateTime endTime;
 	
 	@Column(name = "job_completed")
 	private boolean completed;
@@ -97,19 +97,19 @@ public class JobDTO {
 		this.duration = duration;
 	}
 
-	public Timestamp getStartTime() {
+	public LocalDateTime getStartTime() {
 		return startTime;
 	}
 
-	public void setStartTime(Timestamp startTime) {
+	public void setStartTime(LocalDateTime startTime) {
 		this.startTime = startTime;
 	}
 
-	public Timestamp getEndTime() {
+	public LocalDateTime getEndTime() {
 		return endTime;
 	}
 
-	public void setEndTime(Timestamp endTime) {
+	public void setEndTime(LocalDateTime endTime) {
 		this.endTime = endTime;
 	}
 	

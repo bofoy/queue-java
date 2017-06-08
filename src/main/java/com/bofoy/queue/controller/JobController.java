@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.bofoy.queue.domain.dto.JobDTO;
+import com.bofoy.queue.dto.JobDTO;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/job")
+@RequestMapping("/jobs")
 @Api
 public class JobController {
 

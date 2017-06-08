@@ -18,13 +18,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.bofoy.queue.domain.User;
+import com.bofoy.queue.domain.Role;
 import com.bofoy.queue.exception.StatusCode;
 
 @Repository
 @Transactional
-public class UserDAOImpl implements UserDAO {
-
+public class RoleDAOImpl implements RoleDAO {
+	
 	private static final Logger logger = LoggerFactory.getLogger(UserDAOImpl.class);
 	
 	@Autowired
@@ -38,10 +38,10 @@ public class UserDAOImpl implements UserDAO {
 	}
 	
 	@Override
-	public List<User> findAllUsers() {
+	public List<Role> findAllRoles() {
 		CriteriaBuilder builder = getCurrentSession().getCriteriaBuilder();
-		CriteriaQuery<User> query = builder.createQuery(User.class);
-		Root<User> root = query.from(User.class);
+		CriteriaQuery<Role> query = builder.createQuery(Role.class);
+		Root<Role> root = query.from(Role.class);
 		
 		query.select(root);
 		
@@ -49,17 +49,17 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public User findUser(String userName) {
+	public Role findRole(String roleName) {
 		CriteriaBuilder builder = getCurrentSession().getCriteriaBuilder();
-		CriteriaQuery<User> query = builder.createQuery(User.class);
-		Root<User> root = query.from(User.class);
+		CriteriaQuery<Role> query = builder.createQuery(Role.class);
+		Root<Role> root = query.from(Role.class);
 		
-		query.select(root).where(builder.equal(root.get("username"), userName));
+		query.select(root).where(builder.equal(root.get("userName"), roleName));
 
 		try {
-			User user = getCurrentSession().createQuery(query).getSingleResult();
-			logger.info("Found user:{}", user.toString());
-			return user;
+			Role role = getCurrentSession().createQuery(query).getSingleResult();
+			logger.info("Found user:{}", role.toString());
+			return role;
 		}
 		catch(NoResultException e) {
 			logger.error(StatusCode.USER_DOES_NOT_EXIST.toString() + ": " + e.getMessage());
@@ -68,38 +68,28 @@ public class UserDAOImpl implements UserDAO {
 	}
 
 	@Override
-	public StatusCode addUser(User user) {
+	public StatusCode addRole(Role role) {
 		EntityManager entityManager = emFactory.createEntityManager();
 		
-		logger.debug("Beginning database transaction...");
+		logger.debug("Creating role:{}", role.getRoleName());
 		
 		try {
-			entityManager.getTransaction().begin();
+			entityManager.persist(role);
 			
-			entityManager.persist(user);
-			entityManager.getTransaction().commit();
-			
-			logger.info("Successfully created user:{}", user.getUsername());
-			logger.debug("Ending database transaction...");
-			return StatusCode.SIGNUP_SUCCESSFUL;
+			logger.info("Successfully created role:{}", role.getRoleName());
+			return StatusCode.SUCCESS;
 		}
 		catch (IllegalStateException e) {
-			logger.error(StatusCode.SIGNUP_FAILED.toString() + ": " + e.getMessage());
-			logger.debug("Rolling back transaction...");
-			entityManager.getTransaction().rollback();
-			return StatusCode.SIGNUP_FAILED;
+			logger.error(StatusCode.FAILED.toString() + ": " + e.getMessage());
+			return StatusCode.FAILED;
 		} 
 		catch (EntityExistsException e) {
-			logger.error(StatusCode.USER_ALREADY_EXISTS.toString() + ": " + e.getMessage());
-			logger.debug("Rolling back transaction...");
-			entityManager.getTransaction().rollback();
-			return StatusCode.USER_ALREADY_EXISTS;
+			logger.error(StatusCode.ROLE_ALREADY_EXISTS.toString() + ": " + e.getMessage());
+			return StatusCode.ROLE_ALREADY_EXISTS;
 		}
 		catch (Exception e) {
-			logger.error(StatusCode.USER_ALREADY_EXISTS.toString() + ": " + e.getMessage());
-			logger.debug("Rolling back transaction...");
-			entityManager.getTransaction().rollback();
-			return StatusCode.USER_ALREADY_EXISTS;
+			logger.error(StatusCode.ROLE_ALREADY_EXISTS.toString() + ": " + e.getMessage());
+			return StatusCode.ROLE_ALREADY_EXISTS;
 		}
 	}
 

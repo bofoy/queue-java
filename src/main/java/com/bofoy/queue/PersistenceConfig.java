@@ -14,6 +14,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.session.MapSessionRepository;
 
 @Configuration
 public class PersistenceConfig {
@@ -68,6 +69,11 @@ public class PersistenceConfig {
 	@Bean
 	public Mapper modelMapper() {
 		return new DozerBeanMapper();
+	}
+	
+	@Bean
+	public MapSessionRepository mapSessionRepository() {
+		return new MapSessionRepository();
 	}
 	
 }

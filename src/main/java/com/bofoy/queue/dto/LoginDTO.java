@@ -1,4 +1,4 @@
-package com.bofoy.queue.domain.dto;
+package com.bofoy.queue.dto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -11,7 +11,7 @@ public class LoginDTO {
 
 	@Id
 	@Column(name = "user_name")
-	private String userName;
+	private String username;
 	
 	@Column(name = "password")
 	private String password;
@@ -19,12 +19,12 @@ public class LoginDTO {
 	public LoginDTO() {}
 	
 	public LoginDTO(String userName, String password) {
-		this.userName = userName;
+		this.username = userName;
 		this.password = password;
 	}
 	
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 	
 	public String getPassword() {

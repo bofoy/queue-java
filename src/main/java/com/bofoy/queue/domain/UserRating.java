@@ -15,12 +15,12 @@ import javax.persistence.Table;
 public class UserRating {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "rating_id")
 	private int ratingId;
 	
 	@Column(name = "user_name")
-	private String userName;
+	private String username;
 	
 	@Column(name = "rating_score")
 	private BigDecimal ratingScore;
@@ -41,12 +41,12 @@ public class UserRating {
 		this.ratingId = ratingId;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getUsername() {
+		return username;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String userName) {
+		this.username = userName;
 	}
 
 	public BigDecimal getRatingScore() {

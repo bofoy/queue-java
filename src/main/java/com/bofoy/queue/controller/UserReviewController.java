@@ -8,6 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -15,13 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bofoy.queue.dao.UserReviewDAO;
 import com.bofoy.queue.domain.Review;
+import com.bofoy.queue.dto.ReviewDTO;
 import com.bofoy.queue.exception.StatusCode;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
-@RequestMapping("/review")
+@RequestMapping("/reviews")
 @Api
 public class UserReviewController {
 
@@ -30,18 +33,30 @@ public class UserReviewController {
 	@Autowired
 	private UserReviewDAO userReviewDAO;
 	
-	@ApiOperation(value = "Create a user review", response = Response.class)
+	@ApiOperation(value = "Creates a review for a user", response = Response.class)
 	@RequestMapping(method = RequestMethod.POST)
-	public @ResponseBody Callable<ResponseEntity<Response>> createReview(Review review) {
-		logger.info("Received review creation request");
-		return null;
+	public @ResponseBody Callable<ResponseEntity<Response>> createReview(@RequestBody ReviewDTO review) {
+		return () -> {
+			StatusCode status = userReviewDAO.addReview(review);
+			Response response = null;
+			
+			if (status == StatusCode.SUCCESS) {
+				response = new Response(StatusCode.SUCCESS.toString(), "Successfully created review");
+				return new ResponseEntity<>(response, HttpStatus.OK);
+				
+			}
+			else {
+				response = new Response(StatusCode.FAILED.toString(), "Failed to create review");
+				return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+			}
+		};
 	}
 	
 	@ApiOperation(value = "Retrieves all reviews for a user", response = Response.class)
-	@RequestMapping(method = RequestMethod.GET)
-	public @ResponseBody Callable<ResponseEntity<Response>> getReviews(String userName) {
+	@RequestMapping(value = "/{userName}", method = RequestMethod.GET)
+	public @ResponseBody Callable<ResponseEntity<Response>> getReviews(@PathVariable String userName) {
 		return () -> {
-			List<Review> reviews = userReviewDAO.getReviewsForUser(userName);
+			List<Review> reviews = userReviewDAO.findReviewsForUser(userName);
 			Response response = null;
 			
 			if (reviews == null) {
@@ -50,8 +65,8 @@ public class UserReviewController {
 				return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 			else {
-				response = new Response(StatusCode.SUCCESS.toString(), "Successuflly retrieves reviews");
-				logger.info("Successfully retrieved reviews for user:{}", userName);
+				response = new Response(StatusCode.SUCCESS.toString(), "Retrieved reviews");
+				logger.info("Number of reviews for user:{} count:{}", userName, reviews.size());
 				return new ResponseEntity<>(response, HttpStatus.OK);
 			}
 		};

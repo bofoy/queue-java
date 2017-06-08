@@ -7,11 +7,9 @@ import com.bofoy.queue.exception.StatusCode;
 
 public interface UserDAO {
 
-	List<User> getAllUsers();
+	List<User> findAllUsers();
 	
-	User getUser(String userName);
-	
-	StatusCode deleteUser(String username);
+	User findUser(String userName);
 	
 	StatusCode addUser(User user);
 	

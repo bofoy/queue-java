@@ -1,16 +1,16 @@
-package com.bofoy.queue.domain.dto;
+package com.bofoy.queue.dto;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class UserSignupDTO {
 
-	private String userName;
+	private String username;
 
-	private String firstName;
+	private String firstname;
 
-	private String lastName;
+	private String lastname;
 	
-	private Date signupDate;
+	private LocalDate signupDate;
 
 	private String password;
 
@@ -21,9 +21,9 @@ public class UserSignupDTO {
 	public UserSignupDTO() {}
 	
 	private UserSignupDTO(Builder builder) {
-		this.userName = builder.userName;
-		this.firstName = builder.firstName;
-		this.lastName = builder.lastName;
+		this.username = builder.username;
+		this.firstname = builder.firstname;
+		this.lastname = builder.lastname;
 		this.signupDate = builder.signupDate;
 		this.password = builder.password;
 		this.age = builder.age;
@@ -34,35 +34,35 @@ public class UserSignupDTO {
 		return new Builder();
 	}
 
-	public String getUserName() {
-		return this.userName;
+	public String getUsername() {
+		return this.username;
 	}
 	
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String userName) {
+		this.username = userName;
 	}
 	
-	public String getFirstName() {
-		return firstName;
+	public String getFirstname() {
+		return firstname;
 	}
 	
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+	public void setFirstname(String firstName) {
+		this.firstname = firstName;
 	}
 
-	public String getLastName() {
-		return lastName;
+	public String getLastname() {
+		return lastname;
 	}
 	
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+	public void setLastname(String lastName) {
+		this.lastname = lastName;
 	}
 	
-	public Date getSignupDate() {
+	public LocalDate getSignupDate() {
 		return signupDate;
 	}
 	
-	public void setSignupDate(Date signupDate) {
+	public void setSignupDate(LocalDate signupDate) {
 		this.signupDate = signupDate;
 	}
 	
@@ -92,9 +92,9 @@ public class UserSignupDTO {
 	
 	@Override
 	public String toString() {
-		return "Person [userName=" + userName +
-				", firstName=" + firstName +
-				", lastName=" + lastName +
+		return "Person [userName=" + username +
+				", firstName=" + firstname +
+				", lastName=" + lastname +
 				", signupDate=" + signupDate.toString() +
 				", age=" + age +
 				", email=" + email + "]";
@@ -102,30 +102,30 @@ public class UserSignupDTO {
 	
 	public static class Builder {
 
-		private String userName;
-		private String firstName;
-		private String lastName;
-		private Date signupDate;
+		private String username;
+		private String firstname;
+		private String lastname;
+		private LocalDate signupDate;
 		private String password;
 		private int age;
 		private String email;
 		
-		public Builder userName(String userName) {
-			this.userName = userName;
+		public Builder username(String username) {
+			this.username = username;
 			return this;
 		}
 		
-		public Builder firstName(String firstName) {
-			this.firstName = firstName;
+		public Builder firstname(String firstname) {
+			this.firstname = firstname;
 			return this;
 		}
 		
-		public Builder lastName(String lastName) {
-			this.lastName = lastName;
+		public Builder lastname(String lastname) {
+			this.lastname = lastname;
 			return this;
 		}
 		
-		public Builder signupDate(Date signupDate) {
+		public Builder signupDate(LocalDate signupDate) {
 			this.signupDate = signupDate;
 			return this;
 		}
