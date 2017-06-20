@@ -21,6 +21,7 @@ public class SwaggerConfig {
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
 				.apis(Predicates.not(RequestHandlerSelectors.basePackage("org.springframework.boot")))
+				.apis(Predicates.not(RequestHandlerSelectors.basePackage("org.springframework.security")))
 				.paths(PathSelectors.any())
 				.build()
 				.apiInfo(apiInfo());

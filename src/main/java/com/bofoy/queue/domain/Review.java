@@ -20,9 +20,9 @@ public class Review {
 	@Column(name = "review_id")
 	private int reviewId;
 	
-	@Column(name = "user_name")
-	private String username;
-
+	@Column(name = "email")
+	private String email;
+	
 	@Column(name = "review_score")
 	private BigDecimal reviewScore;
 	
@@ -44,14 +44,14 @@ public class Review {
 		this.reviewId = reviewId;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String userName) {
-		this.username = userName;
+	public void setEmail(String email) {
+		this.email = email;
 	}
-
+	
 	public BigDecimal getReviewScore() {
 		return reviewScore;
 	}

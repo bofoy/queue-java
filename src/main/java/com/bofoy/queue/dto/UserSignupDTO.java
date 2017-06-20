@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class UserSignupDTO {
 
-	private String username;
+	private String email;
 
 	private String firstname;
 
@@ -16,12 +16,10 @@ public class UserSignupDTO {
 
 	private int age;
 
-	private String email;
-
 	public UserSignupDTO() {}
 	
 	private UserSignupDTO(Builder builder) {
-		this.username = builder.username;
+		this.email = builder.email;
 		this.firstname = builder.firstname;
 		this.lastname = builder.lastname;
 		this.signupDate = builder.signupDate;
@@ -34,14 +32,6 @@ public class UserSignupDTO {
 		return new Builder();
 	}
 
-	public String getUsername() {
-		return this.username;
-	}
-	
-	public void setUsername(String userName) {
-		this.username = userName;
-	}
-	
 	public String getFirstname() {
 		return firstname;
 	}
@@ -92,8 +82,7 @@ public class UserSignupDTO {
 	
 	@Override
 	public String toString() {
-		return "Person [userName=" + username +
-				", firstName=" + firstname +
+		return "Person [firstName=" + firstname +
 				", lastName=" + lastname +
 				", signupDate=" + signupDate.toString() +
 				", age=" + age +
@@ -102,18 +91,12 @@ public class UserSignupDTO {
 	
 	public static class Builder {
 
-		private String username;
 		private String firstname;
 		private String lastname;
 		private LocalDate signupDate;
 		private String password;
 		private int age;
 		private String email;
-		
-		public Builder username(String username) {
-			this.username = username;
-			return this;
-		}
 		
 		public Builder firstname(String firstname) {
 			this.firstname = firstname;

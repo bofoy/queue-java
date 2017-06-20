@@ -10,21 +10,21 @@ import javax.persistence.Table;
 public class LoginDTO {
 
 	@Id
-	@Column(name = "user_name")
-	private String username;
+	@Column(name = "email")
+	private String email;
 	
 	@Column(name = "password")
 	private String password;
 	
 	public LoginDTO() {}
 	
-	public LoginDTO(String userName, String password) {
-		this.username = userName;
+	public LoginDTO(String email, String password) {
+		this.email = email;
 		this.password = password;
 	}
 	
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 	
 	public String getPassword() {

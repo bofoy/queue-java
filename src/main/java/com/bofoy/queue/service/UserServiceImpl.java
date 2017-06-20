@@ -1,5 +1,7 @@
 package com.bofoy.queue.service;
 
+import java.util.List;
+
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,17 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User findUser(String username) {
 		return userDAO.findUser(username);
+	}
+
+	@Override
+	public List<User> findAllUsers() {
+		List<User> users = userDAO.findAllUsers();
+		return users;
+	}
+
+	@Override
+	public void updateUser(User user) {
+		userDAO.updateUser(user);
 	}
 
 }

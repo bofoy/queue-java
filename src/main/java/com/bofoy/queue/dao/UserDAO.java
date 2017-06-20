@@ -13,4 +13,6 @@ public interface UserDAO {
 	
 	StatusCode addUser(User user);
 	
+	void updateUser(User user);
+	
 }

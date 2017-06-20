@@ -19,11 +19,11 @@ public class JobDTO {
 	@Column(name = "job_id")
 	private int jobId;
 	
-	@Column(name = "lineman_name")
-	private String linemanName;
+	@Column(name = "lineman_email")
+	private String linemanEmail;
 	
-	@Column(name = "agent_name")
-	private String agentName;
+	@Column(name = "agent_email")
+	private String agentEmail;
 	
 	@Column(name = "location")
 	private String location;
@@ -53,20 +53,20 @@ public class JobDTO {
 		this.jobId = jobId;
 	}
 
-	public String getLinemanName() {
-		return linemanName;
+	public String getLinemanEmail() {
+		return linemanEmail;
 	}
 
-	public void setLinemanName(String linemanName) {
-		this.linemanName = linemanName;
+	public void setLinemanEmail(String linemanEmail) {
+		this.linemanEmail = linemanEmail;
 	}
 
-	public String getAgentName() {
-		return agentName;
+	public String getAgentEmail() {
+		return agentEmail;
 	}
 
-	public void setAgentName(String agentName) {
-		this.agentName = agentName;
+	public void setAgentEmail(String agentEmail) {
+		this.agentEmail = agentEmail;
 	}
 
 	public String getLocation() {

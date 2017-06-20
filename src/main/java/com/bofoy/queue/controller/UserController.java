@@ -2,6 +2,7 @@ package com.bofoy.queue.controller;
 
 import java.util.concurrent.Callable;
 
+import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.bofoy.queue.domain.User;
+import com.bofoy.queue.dto.UserProfileDTO;
 import com.bofoy.queue.exception.StatusCode;
 import com.bofoy.queue.service.UserService;
 
@@ -28,6 +30,9 @@ public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
+	private Mapper mapper;
+	
+	@Autowired
 	private UserService userService;
 
 	@ApiOperation(value = "Retrieve information about a user", response = Response.class)
@@ -37,14 +42,15 @@ public class UserController {
 		
 		return () -> {
 			User user = userService.findUser(username);
+			UserProfileDTO userProfile = mapper.map(user, UserProfileDTO.class);
 			Response response = null;
 			
-			if (user == null) {
+			if (userProfile == null) {
 				response = new Response(StatusCode.USER_DOES_NOT_EXIST.toString(), "User not found");
 				return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 			}
 			else {
-				response = new Response(StatusCode.USER_FOUND.toString(), "User found", user);
+				response = new Response(StatusCode.USER_FOUND.toString(), "User found", userProfile);
 				return new ResponseEntity<>(response, HttpStatus.OK);
 			}
 		};

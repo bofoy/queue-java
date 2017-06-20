@@ -54,7 +54,7 @@ public class RoleDAOImpl implements RoleDAO {
 		CriteriaQuery<Role> query = builder.createQuery(Role.class);
 		Root<Role> root = query.from(Role.class);
 		
-		query.select(root).where(builder.equal(root.get("userName"), roleName));
+		query.select(root).where(builder.equal(root.get("roleName"), roleName));
 
 		try {
 			Role role = getCurrentSession().createQuery(query).getSingleResult();

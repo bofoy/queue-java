@@ -6,7 +6,7 @@ public class ReviewDTO {
 
 	private int reviewId;
 	
-	private String username;
+	private String email;
 
 	private BigDecimal reviewScore;
 	
@@ -22,12 +22,12 @@ public class ReviewDTO {
 		this.reviewId = reviewId;
 	}
 	
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String userName) {
-		this.username = userName;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public BigDecimal getReviewScore() {

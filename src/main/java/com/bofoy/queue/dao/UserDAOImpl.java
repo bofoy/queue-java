@@ -54,7 +54,9 @@ public class UserDAOImpl implements UserDAO {
 		CriteriaQuery<User> query = builder.createQuery(User.class);
 		Root<User> root = query.from(User.class);
 		
-		query.select(root).where(builder.equal(root.get("username"), userName));
+		logger.debug("Looking for user:{}", userName);
+		
+		query.select(root).where(builder.equal(root.get("email"), userName));
 
 		try {
 			User user = getCurrentSession().createQuery(query).getSingleResult();
@@ -79,7 +81,7 @@ public class UserDAOImpl implements UserDAO {
 			entityManager.persist(user);
 			entityManager.getTransaction().commit();
 			
-			logger.info("Successfully created user:{}", user.getUsername());
+			logger.info("Successfully created user:{}", user.getEmail());
 			logger.debug("Ending database transaction...");
 			return StatusCode.SIGNUP_SUCCESSFUL;
 		}
@@ -101,6 +103,13 @@ public class UserDAOImpl implements UserDAO {
 			entityManager.getTransaction().rollback();
 			return StatusCode.USER_ALREADY_EXISTS;
 		}
+	}
+
+	@Override
+	public void updateUser(User user) {
+		EntityManager emManager = emFactory.createEntityManager();
+		
+		emManager.merge(user);
 	}
 
 }

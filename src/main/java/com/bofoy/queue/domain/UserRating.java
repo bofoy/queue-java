@@ -19,8 +19,8 @@ public class UserRating {
 	@Column(name = "rating_id")
 	private int ratingId;
 	
-	@Column(name = "user_name")
-	private String username;
+	@Column(name = "email")
+	private String email;
 	
 	@Column(name = "rating_score")
 	private BigDecimal ratingScore;
@@ -41,12 +41,12 @@ public class UserRating {
 		this.ratingId = ratingId;
 	}
 
-	public String getUsername() {
-		return username;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUsername(String userName) {
-		this.username = userName;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public BigDecimal getRatingScore() {

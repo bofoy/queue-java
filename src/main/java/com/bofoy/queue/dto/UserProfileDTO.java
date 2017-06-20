@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 public class UserProfileDTO {
 
-	private String username;
+	private String email;
 
 	private String firstname;
 
@@ -21,19 +21,11 @@ public class UserProfileDTO {
 	
 	private int radius;
 	
-	private String email;
+	private int reviewCount;
 	
 	private BigDecimal rating;
 
 	public UserProfileDTO() {}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String userName) {
-		this.username = userName;
-	}
 
 	public String getFirstname() {
 		return firstname;
@@ -90,7 +82,15 @@ public class UserProfileDTO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
+	
+	public int getReviewCount() {
+		return reviewCount;
+	}
 
+	public void setReviewCount(int reviewCount) {
+		this.reviewCount = reviewCount;
+	}
+	
 	public BigDecimal getRating() {
 		return rating;
 	}
@@ -101,12 +101,12 @@ public class UserProfileDTO {
 	
 	@Override
 	public String toString() {
-		return "Person [userName=" + username +
-				", firstName=" + firstname +
+		return "Person [firstName=" + firstname +
 				", lastName=" + lastname +
 				", signupDate=" + signupDate +
 				", rate=" + rate +
 				", availability=" + availability +
+				", reviewCount=" + reviewCount +
 				", rating=" + rating +
 				", age=" + age +
 				", email=" + email + "]";

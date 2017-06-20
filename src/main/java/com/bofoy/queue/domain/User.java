@@ -6,6 +6,7 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -17,9 +18,9 @@ import javax.persistence.Table;
 public class User {
 
 	@Id
-	@Column(name = "user_name")
-	private String username;
-
+	@Column(name = "email")
+	private String email;
+	
 	@Column(name = "first_name")
 	private String firstname;
 
@@ -44,22 +45,18 @@ public class User {
 	@Column(name = "rate")
 	private BigDecimal rate;
 	
-	@Column(name = "email")
-	private String email;
-	
 	@Column(name = "rating")
 	private BigDecimal rating;
 	
-	@ManyToMany
-	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_name"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	@Column(name = "review_count")
+	private int reviewCount;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "email"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	public Set<Role> roles;
 
 	public User() {
 		this.signupDate = LocalDate.now();
-	}
-	
-	public String getUsername() {
-		return this.username;
 	}
 	
 	public String getFirstname() {
@@ -98,16 +95,16 @@ public class User {
 		return email;
 	}
 	
+	public int getReviewCount() {
+		return reviewCount;
+	}
+	
 	public BigDecimal getRating() {
 		return rating;
 	}
 	
 	public Set<Role> getRoles() {
 		return roles;
-	}
-
-	public void setUsername(String userName) {
-		this.username = userName;
 	}
 
 	public void setFirstname(String firstName) {
@@ -142,6 +139,10 @@ public class User {
 		this.email = email;
 	}
 	
+	public void setReviewCount(int reviewCount) {
+		this.reviewCount = reviewCount;
+	}
+	
 	public void setRating(BigDecimal rating) {
 		this.rating = rating;
 	}
@@ -152,12 +153,12 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "Person [userName=" + username +
-				", firstName=" + firstname +
+		return "Person [firstName=" + firstname +
 				", lastName=" + lastname +
 				", age=" + age +
 				", availability=" + availability +
 				", rate=" + rate +
+				", reviewCount=" + reviewCount +
 				", rating=" + rating +
 				", email=" + email + "]";
 	}
